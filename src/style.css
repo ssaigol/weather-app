@@ -1,13 +1,7 @@
+/* PAGE STYLES */
 body, html {
     margin: 0;
     box-sizing: border-box;
-}
-
-#weather {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    place-content: center;
 }
 
 #page-container {
@@ -18,4 +12,42 @@ body, html {
 
 #page-container > * {
     border: 1px solid black;
+}
+
+/* HEADER STYLES */
+#header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 20px;
+    gap: 10px;
+}
+
+#header > * {
+    margin: 0;
+    padding: 2px 5px;
+}
+
+/* MAIN CONTAINER STYLES */
+#main-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+#weather {
+    margin-top: 75px;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    border: 1px solid black;
+}
+
+#weather > div:first-child {
+    font-size: 1.5rem;
+    text-decoration: underline;
+    font-weight: 600;
+    margin-bottom: 30px;
 }
