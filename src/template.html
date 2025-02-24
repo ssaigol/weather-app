@@ -1,34 +1,27 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="page-container">
+      <div id="header">
+        <label
+          >Search:
+          <input type="text" id="search" />
+        </label>
+        <select id="unit">
+          <option value="us">Imperial</option>
+          <option value="metric">Metric</option>
+        </select>
+        <button id="search-submit">Submit</button>
+      </div>
 
-  <div id="page-container">
-
-    <div id="header">
-      <label>Search:
-        <input type="text" id="search">
-      </label>
-      <select id="unit">
-        <option value="us">Imperial</option>
-        <option value="metric">Metric</option>
-      </select>
-      <button id="search-submit">Submit</button>
-    </div>
-
-    <div id="main-container">
-      <div id="weather">
-      
+      <div id="main-container">
+        <div id="weather"></div>
       </div>
     </div>
-
-
-  </div>
-
-
-</body>
+  </body>
 </html>
