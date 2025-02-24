@@ -1,0 +1,7 @@
+# Ignore node_modules, package-lock.json, webpack config, and eslint config files:
+node_modules/
+package-lock.json
+webpack.dev.js
+webpack.prod.js
+webpack.common.js
+eslint.config.mjs
