@@ -96,3 +96,4 @@ const render = (city, info) => {
     display.append(cell);
   }
 };
+//
