@@ -1,0 +1,21 @@
+body, html {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+#weather {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    place-content: center;
+}
+
+#page-container {
+    display: grid;
+    height: 100vh;
+    grid-template-rows: 50px 1fr;
+}
+
+#page-container > * {
+    border: 1px solid black;
+}
