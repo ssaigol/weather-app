@@ -8,7 +8,7 @@ html {
 #page-container {
   display: grid;
   height: 100vh;
-  grid-template-rows: 50px 1fr;
+  grid-template-rows: 100px 2.5fr 0.75fr 1fr;
 }
 
 #page-container > * {
@@ -36,38 +36,90 @@ html {
 /* MAIN CONTAINER STYLES */
 #main-container {
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  position: relative;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
-#background {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  opacity: 50%;
-
-  background-repeat: repeat;
-  background-size: 100px;
-  z-index: 1;
+#primary, #secondary {
+    height: 75%;
+    border-radius: 10%;
+    border: 1px solid black;
 }
 
-#weather {
-  margin-top: 75px;
-  padding: 50px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  background-color: white;
-  z-index: 2;
+#primary {
+    width: 35%;
+    display: grid;
+    padding: 30px;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 2fr 1fr 1.5fr;
+    gap: 10px;
+    text-align: center;
 
-  border: 1px solid black;
+    grid-template-areas: 
+        "city city city"
+        "current-time . last-updated"
+        "todays-low current-temp todays-high"
+        "description description description"
+        "feels-like . icon";
 }
 
-#weather > div:first-child {
-  font-size: 1.5rem;
-  text-decoration: underline;
-  font-weight: 600;
-  margin-bottom: 30px;
-  text-align: center;
+#primary > * {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+#city-name {
+    grid-area: city;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+#current-time {
+    grid-area: current-time;
+}
+
+#last-updated {
+    grid-area: last-updated;
+}
+
+#todays-low {
+    grid-area: todays-low;
+}
+
+#current-temp {
+    grid-area: current-temp;
+}
+
+#todays-high {
+    grid-area: todays-high;
+}
+
+#description {
+    grid-area: description;
+    align-self: flex-start;
+}
+
+#feels-like {
+    grid-area: feels-like;
+}
+
+#current-icon {
+    grid-area: icon;
+}
+
+
+#secondary {
+    width: 30%;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 5px;
+}
+
+#secondary > * {
+    padding-left: 30px;
 }

@@ -20,5 +20,9 @@
     "deploy": "git add . && git commit -m 'Pre-deployment commit' && git push origin main && git checkout gh-pages && git merge main --no-edit && webpack --config webpack.prod.js && git add dist -f && git commit -m 'Deployment commit' && git subtree push --prefix dist origin gh-pages && git checkout main",
     "lint": "eslint 'src/**/*.js'",
     "prettier": "prettier --write \"src/**/*.{js,css,html,json}\""
+  },
+  "dependencies": {
+    "date-fns": "^4.1.0",
+    "date-fns-tz": "^3.2.0"
   }
 }
