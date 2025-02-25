@@ -4,7 +4,10 @@ const input = document.getElementById("search");
 const button = document.getElementById("search-submit");
 const unitInput = document.getElementById("unit");
 const display = document.getElementById("weather");
-const imageContext = require.context("./imgs", false, /\.(svg)$/);
+const imageContext = import.meta.webpackContext("./imgs", {
+  recursive: false,
+  regExp: /\.(svg)$/,
+});
 const images = {};
 imageContext.keys().forEach((file) => {
   const fileName = file.replace("./", "").replace(/\.[a-zA-Z0-9]+$/, "");
