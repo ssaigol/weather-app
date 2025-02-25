@@ -16,9 +16,6 @@ const descriptionDisp = document.querySelector("#description");
 const feelsLikeDisp = document.querySelector("#feels-like div");
 const currentIconDisp = document.querySelector("#current-icon img");
 
-
-
-
 const imageContext = import.meta.webpackContext("./imgs", {
   recursive: false,
   regExp: /\.(svg)$/,
@@ -34,21 +31,20 @@ const ONEWEEK = format(addDays(TODAY, 8), "yyyy-MM-dd");
 let location = "New York";
 let unitGroup = "us";
 
-
 //Helper Functions
 const searchCity = () => {
-    if (searchInput.value.trim() === "") {
-        renderPrimary();
-    } else {
-        location = searchInput.value;
-        renderPrimary();
-    }
-}
+  if (searchInput.value.trim() === "") {
+    renderPrimary();
+  } else {
+    location = searchInput.value;
+    renderPrimary();
+  }
+};
 
 const getTimeinTimeZone = (timezone) => {
-    const zonedTime = toZonedTime(TODAY, timezone);
-    return format(zonedTime, "HH:mm");
-}
+  const zonedTime = toZonedTime(TODAY, timezone);
+  return format(zonedTime, "HH:mm");
+};
 
 const getWindDirection = (degree) => {
   const directions = [
@@ -93,7 +89,7 @@ const weather = async () => {
     temperature: data.currentConditions.temp,
     description: data.days[0].description,
     feelsLike: data.currentConditions.feelslike,
-    icon: data.currentConditions.icon
+    icon: data.currentConditions.icon,
   };
 
   const todaysConditions = {
@@ -103,31 +99,31 @@ const weather = async () => {
     cloudCover: data.days[0].cloudcover,
     humidity: data.days[0].humidity,
     visibility: data.days[0].visibility,
-    windSpeed:  data.days[0].windspeedmean,
+    windSpeed: data.days[0].windspeedmean,
     windDirection: data.days[0].winddir,
     moonPhase: data.days[0].moonphase,
     sunrise: data.days[0].sunrise,
     sunset: data.days[0].sunset,
-    uvIndex: data.days[0].uvindex
-  }
+    uvIndex: data.days[0].uvindex,
+  };
 
   const hourlyConditions = [];
   for (let i = 0; i < 24; i++) {
     const hour = {
-        temp: data.days[0].hours[i].temp,
-        icon: data.days[0].hours[i].icon,
-        precipProb: data.days[0].hours[i].precipprob
+      temp: data.days[0].hours[i].temp,
+      icon: data.days[0].hours[i].icon,
+      precipProb: data.days[0].hours[i].precipprob,
     };
     hourlyConditions.push(hour);
-  };
+  }
 
   const sevenDayForecast = [];
   for (let i = 1; i < 8; i++) {
     const day = {
-        dayLow: data.days[i].tempmin,
-        dayHigh: data.days[i].tempmax,
-        icon: data.days[i].icon,
-        precipProb: data.days[i].precipprob
+      dayLow: data.days[i].tempmin,
+      dayHigh: data.days[i].tempmax,
+      icon: data.days[i].icon,
+      precipProb: data.days[i].precipprob,
     };
     sevenDayForecast.push(day);
   }
@@ -136,21 +132,19 @@ const weather = async () => {
   return { current, todaysConditions, hourlyConditions, sevenDayForecast };
 };
 
-
-
 //Render Functions
 const renderPrimary = async () => {
-    const { current, todaysConditions } = await weather();
-    cityNameDisp.textContent = current.city;
-    currentTimeDisp.textContent = getTimeinTimeZone(current.timezone);
-    lastUpdatedDisp.textContent = current.lastUpdated.slice(0, 5);
-    todaysLowDisp.textContent = todaysConditions.todaysLow;
-    currentTempDisp.textContent = current.temperature;
-    todaysHighDisp.textContent = todaysConditions.todaysHigh;
-    descriptionDisp.textContent = current.description;
-    feelsLikeDisp.textContent = current.feelsLike;
-    // currentIconDisp.src = `url('${images[current.icon]}')`
-}
+  const { current, todaysConditions } = await weather();
+  cityNameDisp.textContent = current.city;
+  currentTimeDisp.textContent = getTimeinTimeZone(current.timezone);
+  lastUpdatedDisp.textContent = current.lastUpdated.slice(0, 5);
+  todaysLowDisp.textContent = todaysConditions.todaysLow;
+  currentTempDisp.textContent = current.temperature;
+  todaysHighDisp.textContent = todaysConditions.todaysHigh;
+  descriptionDisp.textContent = current.description;
+  feelsLikeDisp.textContent = current.feelsLike;
+  // currentIconDisp.src = `url('${images[current.icon]}')`
+};
 
 //Event Listeners
 window.addEventListener("load", searchCity);
@@ -158,16 +152,15 @@ window.addEventListener("load", searchCity);
 searchSubmit.addEventListener("click", searchCity);
 
 searchInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-        searchCity();
-    }
-})
+  if (e.key === "Enter") {
+    searchCity();
+  }
+});
 
 unitSelect.addEventListener("change", () => {
-    unitGroup = unitSelect.value;
-    searchCity();
-})
-
+  unitGroup = unitSelect.value;
+  searchCity();
+});
 
 // const render = (city, info, icon) => {
 //   while (display.firstChild) {
@@ -198,7 +191,6 @@ unitSelect.addEventListener("change", () => {
 //   const background = document.getElementById("background");
 //   background.style.backgroundImage = `url('${images[icon]}')`;
 // };
-
 
 // const weather = async() => {
 //     const response = await fetch("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Toronto/2025-02-25/2025-03-04?key=KLU5KE9GL7QRF5EPV2FUQESFV&unitGroup=metric&lang=en&include=days,hours,current&elements=datetime,temp,feelslike,icon,tempmin,tempmax,precip,cloudcover,humidivisibility,windspeedmean,moonphase,sunrise,sunset,uvindex,precipprob&iconSet=icons2", {mode: "cors"})
