@@ -70,6 +70,13 @@ html {
   justify-content: center;
   align-items: center;
   gap: 5px;
+  font-weight: 600;
+}
+
+#primary > div > div {
+    font-weight: 400;
+    display: flex;
+    align-items: center;
 }
 
 #city-name {
@@ -122,4 +129,16 @@ html {
 
 #secondary > * {
   padding-left: 30px;
+  display: flex;
+  gap: 5px;
+  font-weight: 600;
+}
+
+#secondary > div > div {
+    font-weight: 400;
+    display: flex;
+}
+
+.unit {
+    white-space: pre;
 }

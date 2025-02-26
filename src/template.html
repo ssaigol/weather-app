@@ -15,58 +15,56 @@
         <select id="unit">
           <option value="us">Imperial</option>
           <option value="metric">Metric</option>
+          <option value="uk">United Kingdom</option>
+          <option value="base">Scientific</option>
         </select>
         <button id="search-submit">Submit</button>
       </div>
 
       <div id="main-container">
         <div id="primary">
-          <div id="city-name">Toronto, Canada</div>
+          <div id="city-name"></div>
           <div id="current-time">
             Current Time:
             <div></div>
           </div>
           <div id="last-updated">
             Last Updated:
-            <div>4:30pm</div>
+            <div></div>
           </div>
           <div id="todays-low">
             Today's Low:
-            <div>-2&degC</div>
+            <div class="value"><div class="unit temp"></div></div>
           </div>
           <div id="current-temp">
             Current Temperature:
-            <div>7.2&degC</div>
+            <div class="value"><div class="unit temp"></div></div>
           </div>
           <div id="todays-high">
             Today's High:
-            <div>8.5&degC</div>
+            <div class="value"><div class="unit temp"></div></div>
           </div>
           <div id="description">
-            Partly cloudy throughout the day with morning rain.
+            
           </div>
           <div id="feels-like">
             Feels Like:
-            <div>5.2&degC</div>
+            <div class="value"><div class="unit temp"></div></div>
           </div>
           <div id="current-icon">
             <img src="imgs/cloudy.svg" width="100px" />
           </div>
         </div>
         <div id="secondary">
-          <div class="today precip">
-            Precipitation: <span>0.012 inches</span>
-          </div>
-          <div class="today cloud-cover">Cloud Cover: <span>68%</span></div>
-          <div class="today humidity">Humidity: <span>82.4%</span></div>
-          <div class="today moon-phase">
-            Moon Phase: <span>Waning Crescent</span>
-          </div>
-          <div class="today sunrise">Sunrise: <span>7:00 AM</span></div>
-          <div class="today sunset">Sunset: <span>6:01 PM</span></div>
-          <div class="today uv-index">UV Index: <span>3</span></div>
-          <div class="today visibility">Visibility: <span>7.9 miles</span></div>
-          <div class="today wind">Wind: <span>5.9km SW</span></div>
+          <div id="precip">Precipitation: <div class="value">0.012 <div class="unit amount"></div></div></div>
+          <div id="cloud-cover">Cloud Cover: <div class="value">68 <div class="unit percentage"></div></div></div>
+          <div id="humidity">Humidity: <div class="value">82.4 <div class="unit percentage"></div></div></div>
+          <div id="moon-phase">Moon Phase: <div>Waning Crescent</div></div>
+          <div id="sunrise">Sunrise: <div></div></div>
+          <div id="sunset">Sunset: <div></div></div>
+          <div id="uv-index">UV Index: <div>3</div></div>
+          <div id="visibility">Visibility: <div class="value">7.9 <div class="unit distance"></div></div></div>
+          <div id="wind">Wind: <div class="value">5.9 <div class="unit speed"></div></div><div id="cardinal">SW</div></div>
         </div>
       </div>
 

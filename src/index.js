@@ -15,6 +15,16 @@ const todaysHighDisp = document.querySelector("#todays-high div");
 const descriptionDisp = document.querySelector("#description");
 const feelsLikeDisp = document.querySelector("#feels-like div");
 const currentIconDisp = document.querySelector("#current-icon img");
+const precipDisp = document.querySelector("#precip div");
+const cloudCoverDisp = document.querySelector("#cloud-cover div");
+const humidityDisp = document.querySelector("#humidity div");
+const moonPhaseDisp = document.querySelector("#moon-phase div");
+const sunriseDisp = document.querySelector("#sunrise div");
+const sunsetDisp = document.querySelector("#sunset div");
+const uvIndexDisp = document.querySelector("#uv-index div");
+const visibilityDisp = document.querySelector("#visibility div");
+const windDisp = document.querySelector("#wind div");
+const windDirDisp = document.querySelector("#cardinal");
 
 const imageContext = import.meta.webpackContext("./imgs", {
   recursive: false,
@@ -30,21 +40,35 @@ const TODAY = format(new Date(), "yyyy-MM-dd");
 const ONEWEEK = format(addDays(TODAY, 8), "yyyy-MM-dd");
 let location = "New York";
 let unitGroup = "us";
+let currentTimeZone;
 
 //Helper Functions
 const searchCity = () => {
   if (searchInput.value.trim() === "") {
-    renderPrimary();
+    render();
   } else {
     location = searchInput.value;
-    renderPrimary();
+    render();
   }
 };
 
-const getTimeinTimeZone = (timezone) => {
-  const zonedTime = toZonedTime(TODAY, timezone);
-  return format(zonedTime, "HH:mm");
+const getZonedTime = () => {
+    const time = toZonedTime(new Date(), currentTimeZone);
+    return format(time, "h:mm aaaa"); 
 };
+
+const moonPhaseCalculator = (value) => {
+    if (value === 0) return "New Moon";
+    if (value > 0 && value < 0.25) return "Waxing Crescent";
+    if (value === 0.25) return "First Quarter";
+    if (value > 0.25 && value < 0.5) return "Waxing Gibbous";
+    if (value === 0.5) return "Full Moon";
+    if (value > 0.5 && value < 0.75) return "Waning Gibbous";
+    if (value === 0.75) return "Last Quarter";
+    if (value > 0.75 && value < 1) return "Waning Crescent";
+}
+
+
 
 const getWindDirection = (degree) => {
   const directions = [
@@ -68,11 +92,6 @@ const getWindDirection = (degree) => {
   return directions[Math.round(degree / 22.5) % 16];
 };
 
-const convertTimeto12H = (string) => {
-  const hour = Number(string.slice(0, 2)) - 12;
-  const rest = string.slice(2, 5);
-  return `${hour}${rest}`;
-};
 
 //API Fetch
 const weather = async () => {
@@ -129,22 +148,102 @@ const weather = async () => {
   }
 
   console.log(current, todaysConditions, hourlyConditions, sevenDayForecast);
+  currentTimeZone = current.timezone;
   return { current, todaysConditions, hourlyConditions, sevenDayForecast };
 };
 
 //Render Functions
-const renderPrimary = async () => {
-  const { current, todaysConditions } = await weather();
+const render = async () => {
+    const { current, todaysConditions, hourlyConditions, sevenDayForecast } = await weather();
+    clearValues();
+    renderPrimary(current, todaysConditions);
+    renderSecondary(todaysConditions);
+    addUnits();
+}
+
+const renderPrimary = (current, todaysConditions) => {
   cityNameDisp.textContent = current.city;
-  currentTimeDisp.textContent = getTimeinTimeZone(current.timezone);
-  lastUpdatedDisp.textContent = current.lastUpdated.slice(0, 5);
-  todaysLowDisp.textContent = todaysConditions.todaysLow;
-  currentTempDisp.textContent = current.temperature;
-  todaysHighDisp.textContent = todaysConditions.todaysHigh;
+  currentTimeDisp.textContent = getZonedTime();
+  const lastUpdatedTime = new Date(TODAY.concat("T", current.lastUpdated));
+  lastUpdatedDisp.textContent = format(lastUpdatedTime, "h:mm aaaa");
+  todaysLowDisp.prepend(todaysConditions.todaysLow);
+  currentTempDisp.prepend(current.temperature);
+  todaysHighDisp.prepend(todaysConditions.todaysHigh);
   descriptionDisp.textContent = current.description;
-  feelsLikeDisp.textContent = current.feelsLike;
+  feelsLikeDisp.prepend(current.feelsLike);
   // currentIconDisp.src = `url('${images[current.icon]}')`
 };
+
+const renderSecondary = (todaysConditions) => {
+    precipDisp.prepend(todaysConditions.precip);
+    cloudCoverDisp.prepend(todaysConditions.cloudCover);
+    humidityDisp.prepend(todaysConditions.humidity);
+    moonPhaseDisp.textContent = moonPhaseCalculator(todaysConditions.moonPhase);
+    const sunriseTime = new Date(TODAY.concat("T", todaysConditions.sunrise));
+    sunriseDisp.textContent = format(sunriseTime, "h:mm aaaa");
+    const sunsetTime = new Date(TODAY.concat("T", todaysConditions.sunset));
+    sunsetDisp.textContent = format(sunsetTime, "h:mm aaaa");
+    uvIndexDisp.textContent = todaysConditions.uvIndex;
+    visibilityDisp.prepend(todaysConditions.visibility);
+    windDisp.prepend(todaysConditions.windSpeed);
+    windDirDisp.textContent = getWindDirection(todaysConditions.windDirection);
+}
+
+const clearValues = () => {
+    const valueElements = document.getElementsByClassName("value");
+    [...valueElements].forEach(element => {
+        element.firstChild.textContent = "";
+    })
+}
+
+const addUnits = () => {
+    const units = {
+        us: {
+            temp: " \u00B0F",
+            amount: " inches",
+            distance: " miles",
+            speed: " mph"
+        },
+    
+        metric: {
+            temp: " \u00B0C",
+            amount: " millimeters",
+            distance: " kilometers",
+            speed: " km/h"
+        },    
+        uk: {
+            temp: " \u00B0C",
+            amount: " millimeters",
+            distance: " miles",
+            speed: " mph"
+        },    
+        base: {
+            temp: " K",
+            amount: " millimeters",
+            distance: " kilometers",
+            speed: " meters per second"
+        }
+    }
+    const unitElements = document.getElementsByClassName("unit");
+    const currentUnitGroup = units[unitGroup];
+    [...unitElements].forEach(element => {
+        if (element.classList.contains("temp")) {
+            element.textContent = currentUnitGroup.temp;
+        };
+        if (element.classList.contains("amount")) {
+            element.textContent = currentUnitGroup.amount;
+        };
+        if (element.classList.contains("distance")) {
+            element.textContent = currentUnitGroup.distance;
+        };
+        if (element.classList.contains("speed")) {
+            element.textContent = currentUnitGroup.speed
+        };
+        if (element.classList.contains("percentage")) {
+            element.textContent = "%";
+        };
+    })
+}
 
 //Event Listeners
 window.addEventListener("load", searchCity);
