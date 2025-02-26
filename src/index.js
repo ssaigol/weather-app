@@ -3,6 +3,7 @@ import { format, addDays, getDay } from "date-fns";
 import { toZonedTime } from "date-fns-tz";
 
 const pageContainer = document.getElementById("page-container");
+const loadingDialog = document.getElementById("loading");
 const searchInput = document.getElementById("search");
 const unitSelect = document.getElementById("unit");
 const headerDate = document.getElementById("todays-date");
@@ -78,8 +79,8 @@ const days = [
     "Friday",
     "Saturday"
 ]
-let location = "New York";
-let unitGroup = "us";
+let location = "Toronto";
+let unitGroup = "metric";
 let currentUnits = {
     temp: " \u00B0F",
     amount: " inches",
@@ -230,6 +231,7 @@ const render = async () => {
     renderSecondary(todaysConditions);
     renderHourly(hourlyConditions);
     renderWeekly(sevenDayForecast);
+    loadingDialog.close();
 }
 
 const renderPrimary = (current, todaysConditions) => {
@@ -317,7 +319,6 @@ const collapseWeekly = () => {
     adjustGridTemplate();
 }
 
-
 const adjustGridTemplate = () => {
     if (hourlySection.classList.contains("collapsed") && weeklySection.classList.contains("collapsed")) {
         pageContainer.style.gridTemplateRows = "100px minmax(2.5fr, 600px) 2.5rem 2.5rem"
@@ -327,17 +328,23 @@ const adjustGridTemplate = () => {
         pageContainer.style.gridTemplateRows = "100px minmax(2.5fr, 600px) 2.5rem 0.75fr 2.5rem 1fr"
     }
 }
+
 //Event Listeners
-window.addEventListener("load", searchCity);
-window.addEventListener("load", renderHeader);
+window.addEventListener("load", () => {
+    loadingDialog.showModal();
+    renderHeader();
+    searchCity();
+});
 
 searchInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
+    loadingDialog.showModal();
     searchCity();
   }
 });
 
 unitSelect.addEventListener("change", () => {
+    loadingDialog.showModal();
   unitGroup = unitSelect.value;
   searchCity();
 });
@@ -345,14 +352,4 @@ unitSelect.addEventListener("change", () => {
 hourlyCollapse.addEventListener("click", collapseHourly)
 weeklyCollapse.addEventListener("click", collapseWeekly)
 
-
-
-// const renderLoading = () => {
-//   while (display.firstChild) {
-//     display.removeChild(display.firstChild);
-//   }
-//   const loadingMessage = document.createElement("div");
-//   loadingMessage.textContent = "Loading...";
-//   display.append(loadingMessage);
-// };
 

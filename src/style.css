@@ -11,7 +11,7 @@ html {
   height: 100vh;
   grid-template-rows: 100px minmax(2.5fr, 600px) 2.5rem 2.5rem;
 }
-
+ 
 #page-container > * {
   border: 1px solid black;
 }
@@ -48,6 +48,10 @@ background-color: #19747E;
     margin-right: 20px;
     padding: 3px;
     border-radius: 10px;
+}
+
+#loading::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* MAIN CONTAINER STYLES */
