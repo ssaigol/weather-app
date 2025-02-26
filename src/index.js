@@ -1,11 +1,10 @@
 import "./style.css";
-import { format, addDays } from "date-fns";
+import { format, addDays, getDay } from "date-fns";
 import { toZonedTime } from "date-fns-tz";
 
 const searchInput = document.getElementById("search");
 const searchSubmit = document.getElementById("search-submit");
 const unitSelect = document.getElementById("unit");
-const primary = document.getElementById("primary");
 const cityNameDisp = document.querySelector("#city-name");
 const currentTimeDisp = document.querySelector("#current-time div");
 const lastUpdatedDisp = document.querySelector("#last-updated div");
@@ -25,6 +24,8 @@ const uvIndexDisp = document.querySelector("#uv-index div");
 const visibilityDisp = document.querySelector("#visibility div");
 const windDisp = document.querySelector("#wind div");
 const windDirDisp = document.querySelector("#cardinal");
+const hourlySection = document.getElementById("hourly");
+const weeklySection = document.getElementById("seven-days");
 
 const imageContext = import.meta.webpackContext("./imgs", {
   recursive: false,
@@ -38,8 +39,50 @@ imageContext.keys().forEach((file) => {
 
 const TODAY = format(new Date(), "yyyy-MM-dd");
 const ONEWEEK = format(addDays(TODAY, 8), "yyyy-MM-dd");
+const hours = [
+    "12 a.m.",
+    "1 a.m.",
+    "2 a.m.",
+    "3 a.m.",
+    "4 a.m.",
+    "5 a.m.",
+    "6 a.m.",
+    "7 a.m.",
+    "8 a.m.",
+    "9 a.m.",
+    "10 a.m.",
+    "11 a.m.",
+    "12 p.m.",
+    "1 p.m.",
+    "2 p.m.",
+    "3 p.m.",
+    "4 p.m.",
+    "5 p.m.",
+    "6 p.m.",
+    "7 p.m.",
+    "8 p.m.",
+    "9 p.m.",
+    "10 p.m.",
+    "11 p.m.",
+
+];
+const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+]
 let location = "New York";
 let unitGroup = "us";
+let currentUnits = {
+    temp: " \u00B0F",
+    amount: " inches",
+    distance: " miles",
+    speed: " mph"
+}
 let currentTimeZone;
 
 //Helper Functions
@@ -51,6 +94,33 @@ const searchCity = () => {
     render();
   }
 };
+
+const updateUnits = () => {
+    if (unitGroup === "us") {
+        currentUnits.temp = " \u00B0F";
+        currentUnits.amount = " inches";
+        currentUnits.distance = " miles";
+        currentUnits.speed = "mph"
+    }
+    if (unitGroup === "metric") {
+        currentUnits.temp = " \u00B0C";
+        currentUnits.amount = " millimeters";
+        currentUnits.distance = " kilometers";
+        currentUnits.speed = "km/h"
+    }
+    if (unitGroup === "uk") {
+        currentUnits.temp = " \u00B0C";
+        currentUnits.amount = " millimeters";
+        currentUnits.distance = " miles";
+        currentUnits.speed = "mph"
+    }
+    if (unitGroup === "base") {
+        currentUnits.temp = " K";
+        currentUnits.amount = " millimeters";
+        currentUnits.distance = " kilometers";
+        currentUnits.speed = " meters per second"
+    }
+}
 
 const getZonedTime = () => {
     const time = toZonedTime(new Date(), currentTimeZone);
@@ -67,8 +137,6 @@ const moonPhaseCalculator = (value) => {
     if (value === 0.75) return "Last Quarter";
     if (value > 0.75 && value < 1) return "Waning Crescent";
 }
-
-
 
 const getWindDirection = (degree) => {
   const directions = [
@@ -131,7 +199,6 @@ const weather = async () => {
     const hour = {
       temp: data.days[0].hours[i].temp,
       icon: data.days[0].hours[i].icon,
-      precipProb: data.days[0].hours[i].precipprob,
     };
     hourlyConditions.push(hour);
   }
@@ -155,10 +222,11 @@ const weather = async () => {
 //Render Functions
 const render = async () => {
     const { current, todaysConditions, hourlyConditions, sevenDayForecast } = await weather();
-    clearValues();
+    updateUnits();
     renderPrimary(current, todaysConditions);
     renderSecondary(todaysConditions);
-    addUnits();
+    renderHourly(hourlyConditions);
+    renderWeekly(sevenDayForecast);
 }
 
 const renderPrimary = (current, todaysConditions) => {
@@ -166,84 +234,72 @@ const renderPrimary = (current, todaysConditions) => {
   currentTimeDisp.textContent = getZonedTime();
   const lastUpdatedTime = new Date(TODAY.concat("T", current.lastUpdated));
   lastUpdatedDisp.textContent = format(lastUpdatedTime, "h:mm aaaa");
-  todaysLowDisp.prepend(todaysConditions.todaysLow);
-  currentTempDisp.prepend(current.temperature);
-  todaysHighDisp.prepend(todaysConditions.todaysHigh);
+  todaysLowDisp.textContent = todaysConditions.todaysLow + currentUnits.temp;
+  currentTempDisp.textContent = current.temperature + currentUnits.temp;
+  todaysHighDisp.textContent = todaysConditions.todaysHigh + currentUnits.temp;
   descriptionDisp.textContent = current.description;
-  feelsLikeDisp.prepend(current.feelsLike);
-  // currentIconDisp.src = `url('${images[current.icon]}')`
+  feelsLikeDisp.textContent = current.feelsLike + currentUnits.temp;
+  currentIconDisp.src = images[current.icon];
 };
 
 const renderSecondary = (todaysConditions) => {
-    precipDisp.prepend(todaysConditions.precip);
-    cloudCoverDisp.prepend(todaysConditions.cloudCover);
-    humidityDisp.prepend(todaysConditions.humidity);
+    precipDisp.textContent = todaysConditions.precip + currentUnits.amount;
+    cloudCoverDisp.textContent = todaysConditions.cloudCover + "%";
+    humidityDisp.textContent = todaysConditions.humidity + "%";
     moonPhaseDisp.textContent = moonPhaseCalculator(todaysConditions.moonPhase);
     const sunriseTime = new Date(TODAY.concat("T", todaysConditions.sunrise));
     sunriseDisp.textContent = format(sunriseTime, "h:mm aaaa");
     const sunsetTime = new Date(TODAY.concat("T", todaysConditions.sunset));
     sunsetDisp.textContent = format(sunsetTime, "h:mm aaaa");
     uvIndexDisp.textContent = todaysConditions.uvIndex;
-    visibilityDisp.prepend(todaysConditions.visibility);
-    windDisp.prepend(todaysConditions.windSpeed);
+    visibilityDisp.textContent = todaysConditions.visibility + currentUnits.distance;
+    windDisp.textContent = todaysConditions.windSpeed + currentUnits.speed;
     windDirDisp.textContent = getWindDirection(todaysConditions.windDirection);
 }
 
-const clearValues = () => {
-    const valueElements = document.getElementsByClassName("value");
-    [...valueElements].forEach(element => {
-        element.firstChild.textContent = "";
+const renderHourly = (hourlyConditions) => {
+    while (hourlySection.firstChild) {
+        hourlySection.removeChild(hourlySection.firstChild);
+    }
+    hourlyConditions.forEach((hour, index) => {
+        const cell = document.createElement("div");
+        const time = document.createElement("div");
+        time.textContent = hours[index];
+        const hourTemp = document.createElement("div");
+        hourTemp.textContent = hour.temp + currentUnits.temp;
+        const hourIcon = document.createElement("img");
+        hourIcon.src = images[hour.icon];
+        hourIcon.style.height = "20%"
+        cell.append(time, hourIcon, hourTemp);
+        hourlySection.append(cell)
     })
 }
 
-const addUnits = () => {
-    const units = {
-        us: {
-            temp: " \u00B0F",
-            amount: " inches",
-            distance: " miles",
-            speed: " mph"
-        },
-    
-        metric: {
-            temp: " \u00B0C",
-            amount: " millimeters",
-            distance: " kilometers",
-            speed: " km/h"
-        },    
-        uk: {
-            temp: " \u00B0C",
-            amount: " millimeters",
-            distance: " miles",
-            speed: " mph"
-        },    
-        base: {
-            temp: " K",
-            amount: " millimeters",
-            distance: " kilometers",
-            speed: " meters per second"
-        }
+const renderWeekly = (week) => {
+    const today = getDay(new Date());
+    while (weeklySection.firstChild) {
+        weeklySection.removeChild(weeklySection.firstChild);
     }
-    const unitElements = document.getElementsByClassName("unit");
-    const currentUnitGroup = units[unitGroup];
-    [...unitElements].forEach(element => {
-        if (element.classList.contains("temp")) {
-            element.textContent = currentUnitGroup.temp;
-        };
-        if (element.classList.contains("amount")) {
-            element.textContent = currentUnitGroup.amount;
-        };
-        if (element.classList.contains("distance")) {
-            element.textContent = currentUnitGroup.distance;
-        };
-        if (element.classList.contains("speed")) {
-            element.textContent = currentUnitGroup.speed
-        };
-        if (element.classList.contains("percentage")) {
-            element.textContent = "%";
-        };
+    week.forEach((day, index) => {
+        const cell = document.createElement("div");
+        const date = document.createElement("div");
+        date.textContent = days[(today + index + 1) % 7];
+        const temps = document.createElement("div");
+        const dayHigh = document.createElement("div");
+        dayHigh.textContent = day.dayHigh + currentUnits.temp;
+        const dayLow = document.createElement("div");
+        dayLow.textContent = day.dayLow + currentUnits.temp;
+        temps.append(dayLow, dayHigh);
+        temps.classList.add("temps");
+        const dayIcon = document.createElement("img");
+        dayIcon.src = images[day.icon];
+        dayIcon.style.height = "20%"
+        cell.append(date, temps, dayIcon );
+        weeklySection.append(cell)
     })
-}
+} 
+
+
 
 //Event Listeners
 window.addEventListener("load", searchCity);
@@ -261,21 +317,6 @@ unitSelect.addEventListener("change", () => {
   searchCity();
 });
 
-// const render = (city, info, icon) => {
-//   while (display.firstChild) {
-//     display.removeChild(display.firstChild);
-//   }
-//   const cityName = document.createElement("div");
-//   cityName.textContent = city;
-//   display.append(cityName);
-//   for (const key in info) {
-//     const cell = document.createElement("div");
-//     cell.innerHTML = `<strong>${key}:</strong> ${info[key]}`;
-//     display.append(cell);
-//   }
-//   renderBackground(icon);
-//   input.value = "";
-// };
 
 // const renderLoading = () => {
 //   while (display.firstChild) {
@@ -286,16 +327,3 @@ unitSelect.addEventListener("change", () => {
 //   display.append(loadingMessage);
 // };
 
-// const renderBackground = (icon) => {
-//   const background = document.getElementById("background");
-//   background.style.backgroundImage = `url('${images[icon]}')`;
-// };
-
-// const weather = async() => {
-//     const response = await fetch("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Toronto/2025-02-25/2025-03-04?key=KLU5KE9GL7QRF5EPV2FUQESFV&unitGroup=metric&lang=en&include=days,hours,current&elements=datetime,temp,feelslike,icon,tempmin,tempmax,precip,cloudcover,humidivisibility,windspeedmean,moonphase,sunrise,sunset,uvindex,precipprob&iconSet=icons2", {mode: "cors"})
-
-//     const data = await response.json();
-//     console.log(data);
-// }
-
-// weather();

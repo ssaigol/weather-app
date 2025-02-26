@@ -75,8 +75,6 @@ html {
 
 #primary > div > div {
     font-weight: 400;
-    display: flex;
-    align-items: center;
 }
 
 #city-name {
@@ -136,9 +134,57 @@ html {
 
 #secondary > div > div {
     font-weight: 400;
-    display: flex;
 }
 
-.unit {
-    white-space: pre;
+
+#hourly {
+    padding: 5px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 1fr 1fr;
+    gap: 5px;
+}
+
+#hourly > div {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#hourly > div > div:first-child {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+#seven-days {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 10px;
+    gap: 10px;
+}
+
+#seven-days > div {
+    width: 12%;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#seven-days .temps {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+}
+
+#seven-days > div > div:first-child {
+    font-size: 1rem;
+    font-weight: 600; 
 }
