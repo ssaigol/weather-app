@@ -11,7 +11,7 @@ html {
   height: 100vh;
   grid-template-rows: 100px minmax(2.5fr, 600px) 2.5rem 2.5rem;
 }
- 
+
 #page-container > * {
   border: 1px solid black;
 }
@@ -22,36 +22,36 @@ html {
   align-items: center;
   justify-content: space-between;
   padding: 10px 20px;
-position: relative;
-background-color: #19747E;
+  position: relative;
+  background-color: #19747e;
 }
 
 #todays-date {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: white;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: white;
 }
 
 #search {
-    width: 30%;
-    height: 1rem;
-    border-radius: 50px;
-    border: none;
-    padding: 7px 20px;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 1rem;
+  width: 30%;
+  height: 1rem;
+  border-radius: 50px;
+  border: none;
+  padding: 7px 20px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1rem;
 }
 
 #unit {
-    margin-right: 20px;
-    padding: 3px;
-    border-radius: 10px;
+  margin-right: 20px;
+  padding: 3px;
+  border-radius: 10px;
 }
 
 #loading::backdrop {
-    background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* MAIN CONTAINER STYLES */
@@ -97,7 +97,7 @@ background-color: #19747E;
 }
 
 #primary > div > div {
-    font-weight: 400;
+  font-weight: 400;
 }
 
 #city-name {
@@ -156,78 +156,78 @@ background-color: #19747E;
 }
 
 #secondary > div > div {
-    font-weight: 400;
+  font-weight: 400;
 }
 
-#hourly-collapse, #weekly-collapse {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.3rem;
-    cursor: pointer;
+#hourly-collapse,
+#weekly-collapse {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.3rem;
+  cursor: pointer;
 }
-
 
 #hourly {
-    padding: 5px 15px;
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: 1fr 1fr;
-    gap: 5px;
-    background-color: #A9D6E5;
+  padding: 5px 15px;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 1fr 1fr;
+  gap: 5px;
+  background-color: #a9d6e5;
 }
 
 #hourly.collapsed {
-    display: none;
+  display: none;
 }
 
 #hourly > div {
-    border: 1px solid black;
-    border-radius: 10px;
-    padding: 5px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    background-color: white;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background-color: white;
 }
 
 #hourly > div > div:first-child {
-    font-size: 1rem;
-    font-weight: 600;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 #seven-days {
-    display: flex;
-    justify-content: space-evenly;
-    padding: 10px;
-    gap: 10px;
-    background-color: #e4f2ee;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 10px;
+  gap: 10px;
+  background-color: #e4f2ee;
 }
 
 #seven-days.collapsed {
-    display: none;
+  display: none;
 }
 
 #seven-days > div {
-    width: 15%;
-    border: 1px solid black;
-    border-radius: 10px;
-    padding: 5px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    background-color: white;
+  width: 15%;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background-color: white;
 }
 
 #seven-days .temps {
-    display: flex;
-    justify-content: space-between;
-    width: 80%;
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
 }
 
 #seven-days > div > div:first-child {
-    font-size: 1rem;
-    font-weight: 600; 
+  font-size: 1rem;
+  font-weight: 600;
 }
