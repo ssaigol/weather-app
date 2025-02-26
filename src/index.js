@@ -2,6 +2,7 @@ import "./style.css";
 import { format, addDays, getDay } from "date-fns";
 import { toZonedTime } from "date-fns-tz";
 
+const pageContainer = document.getElementById("page-container");
 const searchInput = document.getElementById("search");
 const unitSelect = document.getElementById("unit");
 const headerDate = document.getElementById("todays-date");
@@ -26,6 +27,8 @@ const windDisp = document.querySelector("#wind div");
 const windDirDisp = document.querySelector("#cardinal");
 const hourlySection = document.getElementById("hourly");
 const weeklySection = document.getElementById("seven-days");
+const hourlyCollapse = document.getElementById("hourly-collapse");
+const weeklyCollapse = document.getElementById("weekly-collapse");
 
 const imageContext = import.meta.webpackContext("./imgs", {
   recursive: false,
@@ -304,6 +307,26 @@ const renderHeader = () => {
     headerDate.textContent = date;
 }
 
+const collapseHourly = () => {
+    hourlySection.classList.toggle("collapsed");
+    adjustGridTemplate();
+}
+
+const collapseWeekly = () => {
+    weeklySection.classList.toggle("collapsed");
+    adjustGridTemplate();
+}
+
+
+const adjustGridTemplate = () => {
+    if (hourlySection.classList.contains("collapsed") && weeklySection.classList.contains("collapsed")) {
+        pageContainer.style.gridTemplateRows = "100px minmax(2.5fr, 600px) 2.5rem 2.5rem"
+    } else if (!hourlySection.classList.contains("collapsed") && weeklySection.classList.contains("collapsed")) {
+        pageContainer.style.gridTemplateRows = "100px minmax(2.5fr, 600px) 2.5rem 0.75fr 2.5rem"
+    } else if (!hourlySection.classList.contains("collapsed") && !weeklySection.classList.contains("collapsed")) {
+        pageContainer.style.gridTemplateRows = "100px minmax(2.5fr, 600px) 2.5rem 0.75fr 2.5rem 1fr"
+    }
+}
 //Event Listeners
 window.addEventListener("load", searchCity);
 window.addEventListener("load", renderHeader);
@@ -318,6 +341,10 @@ unitSelect.addEventListener("change", () => {
   unitGroup = unitSelect.value;
   searchCity();
 });
+
+hourlyCollapse.addEventListener("click", collapseHourly)
+weeklyCollapse.addEventListener("click", collapseWeekly)
+
 
 
 // const renderLoading = () => {
