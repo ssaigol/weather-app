@@ -183,7 +183,8 @@ html {
   background-color: #a9d6e5;
 }
 
-.collapsed {
+#hourly.collapsed,
+#seven-days.collapsed {
   display: none;
 }
 
