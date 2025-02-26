@@ -3,8 +3,8 @@ import { format, addDays, getDay } from "date-fns";
 import { toZonedTime } from "date-fns-tz";
 
 const searchInput = document.getElementById("search");
-const searchSubmit = document.getElementById("search-submit");
 const unitSelect = document.getElementById("unit");
+const headerDate = document.getElementById("todays-date");
 const cityNameDisp = document.querySelector("#city-name");
 const currentTimeDisp = document.querySelector("#current-time div");
 const lastUpdatedDisp = document.querySelector("#last-updated div");
@@ -299,12 +299,14 @@ const renderWeekly = (week) => {
     })
 } 
 
-
+const renderHeader = () => {
+    const date = format(new Date(), "EEEE, MMMM do, yyyy");
+    headerDate.textContent = date;
+}
 
 //Event Listeners
 window.addEventListener("load", searchCity);
-
-searchSubmit.addEventListener("click", searchCity);
+window.addEventListener("load", renderHeader);
 
 searchInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {

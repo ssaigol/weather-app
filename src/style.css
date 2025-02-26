@@ -19,18 +19,29 @@ html {
 #header {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding-right: 20px;
-  gap: 10px;
+  justify-content: space-between;
+  padding: 10px 20px;
+position: relative;
 }
 
-#header > * {
-  margin: 0;
-  padding: 2px 5px;
+#todays-date {
+    font-size: 1.3rem;
+    font-weight: 600;
 }
 
-#search-submit {
-  border: 1px solid black;
+#search {
+    width: 30%;
+    height: 1rem;
+    border-radius: 50px;
+    border: 1px solid grey;
+    padding: 7px 20px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#unit {
+    margin-right: 20px;
 }
 
 /* MAIN CONTAINER STYLES */
@@ -138,7 +149,7 @@ html {
 
 
 #hourly {
-    padding: 5px;
+    padding: 5px 15px;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     grid-template-rows: 1fr 1fr;
