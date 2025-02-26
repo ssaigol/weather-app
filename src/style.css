@@ -148,6 +148,12 @@ html {
   gap: 5px;
 }
 
+#secondary > div:first-child {
+  align-self: center;
+  font-size: 1.3rem;
+  padding: 0;
+}
+
 #secondary > * {
   padding-left: 30px;
   display: flex;
@@ -177,7 +183,7 @@ html {
   background-color: #a9d6e5;
 }
 
-#hourly.collapsed {
+.collapsed {
   display: none;
 }
 
@@ -203,10 +209,6 @@ html {
   padding: 10px;
   gap: 10px;
   background-color: #e4f2ee;
-}
-
-#seven-days.collapsed {
-  display: none;
 }
 
 #seven-days > div {

@@ -90,39 +90,20 @@ let currentTimeZone;
 
 //Helper Functions
 const searchCity = () => {
-  if (searchInput.value.trim() === "") {
-    render();
-  } else {
-    location = searchInput.value;
-    render();
-  }
+  const inputValue = searchInput.value.trim();
+  location = inputValue || "Toronto";
+  render();
+};
+
+const unitMappings = {
+  us: { temp: "°F", amount: " inches", distance: " miles", speed: " mph" },
+  metric: { temp: "°C", amount: " mm", distance: " km", speed: " km/h" },
+  uk: { temp: "°C", amount: " mm", distance: " miles", speed: " mph" },
+  base: { temp: "K", amount: " mm", distance: " km", speed: " m/s" },
 };
 
 const updateUnits = () => {
-  if (unitGroup === "us") {
-    currentUnits.temp = " \u00B0F";
-    currentUnits.amount = " inches";
-    currentUnits.distance = " miles";
-    currentUnits.speed = "mph";
-  }
-  if (unitGroup === "metric") {
-    currentUnits.temp = " \u00B0C";
-    currentUnits.amount = " millimeters";
-    currentUnits.distance = " kilometers";
-    currentUnits.speed = "km/h";
-  }
-  if (unitGroup === "uk") {
-    currentUnits.temp = " \u00B0C";
-    currentUnits.amount = " millimeters";
-    currentUnits.distance = " miles";
-    currentUnits.speed = "mph";
-  }
-  if (unitGroup === "base") {
-    currentUnits.temp = " K";
-    currentUnits.amount = " millimeters";
-    currentUnits.distance = " kilometers";
-    currentUnits.speed = " meters per second";
-  }
+  currentUnits = unitMappings[unitGroup] || unitMappings["us"];
 };
 
 const getZonedTime = () => {
